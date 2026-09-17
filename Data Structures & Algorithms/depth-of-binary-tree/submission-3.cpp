@@ -12,12 +12,23 @@
 
 class Solution {
 public:
-    TreeNode* invertTree(TreeNode* root) {
-        if(!root) return nullptr;
-        swap(root->left,root->right);
-        invertTree(root->left);
-        invertTree(root->right);
+    int maxDepth(TreeNode* root) {
+        stack<pair<TreeNode*, int>> stack;
+        stack.push({root, 1});
+        int res = 0;
 
-        return root;
+        while (!stack.empty()) {
+            pair<TreeNode*, int> current = stack.top();
+            stack.pop();
+            TreeNode* node = current.first;
+            int depth = current.second;
+
+            if (node != nullptr) {
+                res = max(res, depth);
+                stack.push({node->left, depth + 1});
+                stack.push({node->right, depth + 1});
+            }
+        }
+        return res;
     }
 };
